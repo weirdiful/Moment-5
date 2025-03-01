@@ -1,0 +1,231 @@
+@use 'base';
+
+* {
+    box-sizing: border-box;
+}
+
+
+@mixin regular-text {
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+  }
+@mixin heading-text {
+    font-size: 1.4rem;
+        line-height: 1.2rem;
+}
+
+@mixin button {
+    background-color: var(--primary-color);
+    border: none;
+    text-decoration: none;
+    font: 100% base.$font-stack;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 5px;
+    outline: none;
+    color: var(--text-color);
+    box-shadow: 0 5px var(--accent-color);
+    transition: background-color 0.3s, transform 0.1s;
+}
+  
+html, body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    font: 100% base.$font-stack;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.header {
+    margin-bottom: auto;
+    display: flex;
+    position: relative;
+    background-color: var(--secondary-color);
+    width: 100%;
+    padding: 50px;
+    justify-content: flex-end;
+    align-items: center;
+    a {
+        color: var(--text-color);
+        font-size: 1.4rem;
+        text-decoration: none;
+        
+    }
+    div {
+        display: flex;
+        gap: 20px;
+    }
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    a {
+        text-decoration: none;
+        font-size: 25px;
+        color: var(--text-color);
+        display: block;
+        padding: 10px 20px;
+        transition: 0.3s;
+    }
+    .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+  }
+
+  
+  .sidenav a:hover {
+    color: var(--primary-color);
+  }
+  
+  .hamburger-menu {
+    cursor: pointer;
+  }
+
+  .icon {
+    width: 35px;
+    height: 5px;
+    background-color: var(--text-color);
+    margin: 4px 0;
+}
+  
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button1 {
+    @include button;
+}
+
+.button1:hover {
+    background-color: var(--text-color);
+    color: var(--secondary-color);
+   
+}
+.button1:active {
+    background-color: var(--text-color);
+    color: var(--secondary-color);
+    box-shadow: 0 5px var(--accent-color);
+    transform: translateY(4px);
+}
+
+.button2 {
+    @extend .button1;
+    background-color: var(--secondary-color);
+}
+
+.button2:hover {
+    background-color: var(--text-color);
+    color: var(--secondary-color);
+}
+
+.button1:active {
+    background-color: var(--text-color);
+    color: var(--secondary-color);
+    box-shadow: 0 5px var(--accent-color);
+    transform: translateY(4px);
+}
+
+
+.footer {
+    display: flex;
+    position: relative;
+    background-color: var(--secondary-color);
+    height: 50px;
+    width: 100%;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+}
+
+
+.photos {
+    display: flex;
+    column {
+        flex: 33.33%;
+        padding: 5px;
+    }
+    img {
+    height: auto;
+    width: 300px;
+    }
+    
+}
+
+.sass-text {
+    padding: 20px;
+    h2 {
+        @include heading-text;
+
+    }
+    p {
+        @include regular-text;
+
+    }
+}
+
+
+
+/*Media Queries*/
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
+
+
+
+  @media (min-width: 769px) {
+    .hamburger-menu {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    #header-links {
+        display: none;
+    }
+    .hamburger-menu {
+        display: flex;
+        flex-direction: column;
+    }
+    .photos {
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+        gap: 10px;
+    }
+
+    .photos column {
+        flex: 100%;
+        padding: 0;
+    }
+
+    .photos img {
+        width: 90%; 
+        max-width: 400px; 
+        height: auto;
+    }
+}
