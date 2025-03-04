@@ -1,4 +1,6 @@
 @use 'base';
+@use 'karta';
+@use 'diagram';
 
 * {
     box-sizing: border-box;
@@ -16,7 +18,7 @@
 
 @mixin button {
     background-color: var(--primary-color);
-    border: none;
+    border: none; 
     text-decoration: none;
     font: 100% base.$font-stack;
     padding: 15px;
