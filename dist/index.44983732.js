@@ -31,6 +31,6 @@ new Chart(ctx, {
             }
         ]
     }
-});
+}); // https://studenter.miun.se/~mallar/dt211g/
 
 //# sourceMappingURL=index.44983732.js.map

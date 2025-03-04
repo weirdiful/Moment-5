@@ -629,7 +629,7 @@ new Chart(ctx, {
             }
         ]
     }
-});
+}); // https://studenter.miun.se/~mallar/dt211g/
 
 },{}]},["lC3Ec","8ZNvh"], "8ZNvh", "parcelRequire94c2")
 
