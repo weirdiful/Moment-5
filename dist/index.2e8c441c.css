@@ -10,6 +10,11 @@
   box-sizing: border-box;
 }
 
+#myChart {
+  width: 100px;
+  height: 100px;
+}
+
 html, body {
   background-color: var(--bg-color);
   height: 100%;
