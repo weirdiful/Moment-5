@@ -628,6 +628,16 @@ new Chart(ctx, {
                 borderWidth: 1
             }
         ]
+    },
+    options: {
+        backgroundColor: [
+            "#89023E",
+            "blue",
+            "yellow",
+            "green",
+            "purple",
+            "orange"
+        ]
     }
 }); // https://studenter.miun.se/~mallar/dt211g/
 

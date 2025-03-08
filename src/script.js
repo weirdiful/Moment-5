@@ -18,6 +18,9 @@ data: [12, 19, 3, 5, 2, 3],
 borderWidth: 1
 }]
 },
+  options: {
+    backgroundColor: ["#89023E","blue","yellow", "green", "purple", "orange"]
+  }
 });
 
 
