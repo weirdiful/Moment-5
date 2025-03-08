@@ -27,6 +27,37 @@ async function fetchCourseData() {
   }
 }
 
+/**
+ * 
+ */
+
+function createPopularCoursesChart(data) {
+
+  const filteredCourses = data.filter(course => course.term === "HT23");
+
+  const sortedCourses = filteredCourses.sort((a, b) => b.applicationsTotal - a.applicationsTotal).slice(0, 6);
+
+    const courseNames = sortedCourses.map(course => course.name);
+    const totalApplicants = sortedCourses.map(course => course.applicationsTotal);
+
+    const ctx = document.getElementById("mostPopularCoursesChart").getContext("2d");
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+        labels: courseNames,
+        datasets: [{
+            label: "Totalt antal sökande",
+            data: totalApplicants,
+            backgroundColor: ['purple','purple','purple','purple','purple','purple',],
+            borderWidth: 1
+            }]
+          },
+              
+      });
+  }
+      fetchCourseData().then(data => createPopularCoursesChart(data));
+
+
 const ctx = document.getElementById('myChart');
 new Chart(ctx, {
 type: 'bar',

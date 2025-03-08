@@ -6,13 +6,13 @@
   --accent-color: #30343f;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-#myChart {
+#mostPopularCoursesChart {
   width: 100px;
   height: 100px;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 html, body {

@@ -602,6 +602,54 @@ function openNav() {
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
+/**
+ * Hämta kursdata från API
+ * 
+ * @async
+ * @function fetchCourseData
+ * @returns {Promise<Object[]>} Promise som är kopplad till array av kursdata
+ * @throws {Error} felmeddelande om API anropet misslyckas
+ */ async function fetchCourseData() {
+    try {
+        const response = await fetch("https://studenter.miun.se/~mallar/dt211g/");
+        if (!response.ok) throw new Error("Fel vid h\xe4mtning: " + response.status);
+        return await response.json();
+    } catch (error) {
+        console.error("Fel vid h\xe4mtning av data:", error);
+        return [];
+    }
+}
+/**
+ * 
+ */ function createPopularCoursesChart(data) {
+    const filteredCourses = data.filter((course)=>course.term === "HT23");
+    const sortedCourses = filteredCourses.sort((a, b)=>b.applicationsTotal - a.applicationsTotal).slice(0, 6);
+    const courseNames = sortedCourses.map((course)=>course.name);
+    const totalApplicants = sortedCourses.map((course)=>course.applicationsTotal);
+    const ctx = document.getElementById("mostPopularCoursesChart").getContext("2d");
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: courseNames,
+            datasets: [
+                {
+                    label: "Totalt antal s\xf6kande",
+                    data: totalApplicants,
+                    backgroundColor: [
+                        'purple',
+                        'purple',
+                        'purple',
+                        'purple',
+                        'purple',
+                        'purple'
+                    ],
+                    borderWidth: 1
+                }
+            ]
+        }
+    });
+}
+fetchCourseData().then((data)=>createPopularCoursesChart(data));
 const ctx = document.getElementById('myChart');
 new Chart(ctx, {
     type: 'bar',
