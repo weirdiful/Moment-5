@@ -6,9 +6,17 @@
   --accent-color: #30343f;
 }
 
-#mostPopularCoursesChart {
-  width: 100px;
-  height: 100px;
+.diagram1, .diagram2 {
+  width: 100%;
+  height: 100%;
+  margin: 40px;
+  padding: 40px;
+  display: block;
+}
+
+#coursesChart, #programsChart {
+  width: 100%;
+  height: 500px;
 }
 
 * {

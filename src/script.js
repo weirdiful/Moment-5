@@ -12,67 +12,79 @@ function closeNav() {
  * 
  * @async
  * @function fetchCourseData
- * @returns {Promise<Object[]>} Promise som är kopplad till array av kursdata
+ 
  * @throws {Error} felmeddelande om API anropet misslyckas
  */
 
 async function fetchCourseData() {
   try {
-      const response = await fetch("https://studenter.miun.se/~mallar/dt211g/");
-      if (!response.ok) throw new Error("Fel vid hämtning: " + response.status);
-      return await response.json();
+      let response = await fetch('https://studenter.miun.se/~mallar/dt211g/');
+      let data = await response.json();
+      return data;
   } catch (error) {
-      console.error("Fel vid hämtning av data:", error);
-      return [];
+      console.error('Error fetching data:', error);
   }
 }
 
-/**
- * 
- */
+function createCoursesChart(coursesData) {
+  let topCourses = coursesData
+      .filter(item => item.type === "Kurs")
+      .sort((a, b) => b.applicantsTotal - a.applicantsTotal)
+      .slice(0, 6);
 
-function createPopularCoursesChart(data) {
+  let labels = topCourses.map(course => course.name);
+  let applicants = topCourses.map(course => course.applicantsTotal);
 
-  const filteredCourses = data.filter(course => course.term === "HT23");
+  let ctx = document.getElementById('coursesChart').getContext('2d');
+  new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: labels,
+          datasets: [{
+              label: 'Antal sökande',
+              data: applicants,
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+}
 
-  const sortedCourses = filteredCourses.sort((a, b) => b.applicationsTotal - a.applicationsTotal).slice(0, 6);
+function createProgramChart(programsData) {
+  let topPrograms = programsData
+      .filter(item => item.type === "Program")
+      .sort((a, b) => b.applicantsTotal - a.applicantsTotal)
+      .slice(0, 5);
 
-    const courseNames = sortedCourses.map(course => course.name);
-    const totalApplicants = sortedCourses.map(course => course.applicationsTotal);
+  let labels = topPrograms.map(program => program.name);
+  let applicants = topPrograms.map(program => program.applicantsTotal);
 
-    const ctx = document.getElementById("mostPopularCoursesChart").getContext("2d");
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-        labels: courseNames,
-        datasets: [{
-            label: "Totalt antal sökande",
-            data: totalApplicants,
-            backgroundColor: ['purple','purple','purple','purple','purple','purple',],
-            borderWidth: 1
-            }]
-          },
-              
-      });
-  }
-      fetchCourseData().then(data => createPopularCoursesChart(data));
+  let ctx = document.getElementById('programChart').getContext('2d');
+  new Chart(ctx, {
+      type: 'pie',
+      data: {
+          labels: labels,
+          datasets: [{
+              data: applicants,
+              backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40'],
+          }]
+      }
+  });
+}
 
-
-const ctx = document.getElementById('myChart');
-new Chart(ctx, {
-type: 'bar',
-data: {
-labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-datasets: [{
-label: '# of Votes',
-data: [12, 19, 3, 5, 2, 3],
-borderWidth: 1
-}]
-},
-  options: {
-    backgroundColor: ["#89023E","blue","yellow", "green", "purple", "orange"]
+document.addEventListener('DOMContentLoaded', async () => {
+  let data = await fetchCourseData();
+  
+  if (data) {
+      createCoursesChart(data); 
+      createProgramChart(data);
   }
 });
-
-
-// https://studenter.miun.se/~mallar/dt211g/
