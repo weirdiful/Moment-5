@@ -8,7 +8,34 @@
 }
 
 #map {
-  height: 180px;
+  width: 100%;
+  height: 500px;
+}
+
+#search-container {
+  z-index: 1000;
+  background: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  position: relative;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 5px #0000004d;
+}
+
+#search-input {
+  width: 200px;
+  padding: 5px;
+}
+
+#search-btn {
+  cursor: pointer;
+  color: #fff;
+  background-color: #ea638c;
+  border: none;
+  border-radius: 3px;
+  padding: 5px;
 }
 
 .diagram1, .diagram2 {

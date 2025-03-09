@@ -1,3 +1,32 @@
 
 
-#map { height: 180px; }
+#map { 
+    width: 100%;
+    height: 500px;
+ }
+
+ #search-container {
+    position: relative;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+#search-input {
+    padding: 5px;
+    width: 200px;
+}
+
+#search-btn {
+    padding: 5px;
+    cursor: pointer;
+    background-color: #EA638C;
+    color: white;
+    border: none;
+    border-radius: 3px;
+}

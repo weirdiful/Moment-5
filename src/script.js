@@ -105,4 +105,51 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 
-var map = L.map('map').setView([51.505, -0.09], 13);
+//KARTA
+
+document.addEventListener("DOMContentLoaded", function (){
+
+let map = L.map('map').setView([59.3327, 18.0656], 13);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+let searchBtn = document.getElementById("search-btn");
+let searchInput = document.getElementById("search-input");
+
+searchBtn.addEventListener("click", function () {
+  let query = searchInput.value.trim();
+
+  if (query.length > 0) {
+      fetch (`https://nominatim.openstreetmap.org/search?format=json&q=${query}`)
+        .then(response =>  {
+          if (!response.ok) {
+            throw new Error("Nätverksfel vid sökning");
+          }
+          return response.json();      
+     })
+        .then (data => {
+          if (data.length > 0) {
+            let lat = parseFloat(data[0].lat);
+                        let lon = parseFloat(data[0].lon);
+                        map.setView([lat, lon], 13);
+
+                        L.marker([lat, lon]).addTo(map)
+                            .bindPopup(`<b>${data[0].display_name}</b>`)
+                            .openPopup();
+                    } else {
+                        alert("Platsen hittades inte. Försök igen.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Fel vid sökning:", error);
+                    alert("Ett fel uppstod vid sökning. Kontrollera din internetanslutning.");
+                });
+        } else {
+            alert("Ange en plats att söka efter.");
+        }
+    });
+
+  });
