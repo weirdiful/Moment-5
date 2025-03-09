@@ -691,6 +691,10 @@ function closeNav() {
         createProgramChart(data);
     }
 });
+var map = L.map('map').setView([
+    51.505,
+    -0.09
+], 13);
 
 },{}]},["lC3Ec","8ZNvh"], "8ZNvh", "parcelRequire94c2")
 

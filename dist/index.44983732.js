@@ -93,5 +93,9 @@ function closeNav() {
         createProgramChart(data);
     }
 });
+var map = L.map('map').setView([
+    51.505,
+    -0.09
+], 13);
 
 //# sourceMappingURL=index.44983732.js.map
