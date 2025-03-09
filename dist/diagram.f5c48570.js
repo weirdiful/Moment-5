@@ -607,7 +607,7 @@ function closeNav() {
  * 
  * @async
  * @function fetchCourseData
- 
+ * @returns {Promise<Object[]>} array av objekt med information om kurser och program
  * @throws {Error} felmeddelande om API anropet misslyckas
  */ async function fetchCourseData() {
     try {
@@ -618,7 +618,11 @@ function closeNav() {
         console.error('Error fetching data:', error);
     }
 }
-function createCoursesChart(coursesData) {
+/**
+ * Skapar ett stapeldiagram med de 6 mest sökta kurserna
+ * @function createCoursesChart
+ * @param {Object[]} coursesData - array av kurserna 
+ */ function createCoursesChart(coursesData) {
     let topCourses = coursesData.filter((item)=>item.type === "Kurs").sort((a, b)=>b.applicantsTotal - a.applicantsTotal).slice(0, 6);
     let labels = topCourses.map((course)=>course.name);
     let applicants = topCourses.map((course)=>course.applicantsTotal);
@@ -646,7 +650,11 @@ function createCoursesChart(coursesData) {
         }
     });
 }
-function createProgramChart(programsData) {
+/**
+ * Skapar ett cirkeldiagram med de 5 mest sökta programmen
+ * @function createProgramChart
+ * @param {Object[]} programsData - array av programmen
+ */ function createProgramChart(programsData) {
     let topPrograms = programsData.filter((item)=>item.type === "Program").sort((a, b)=>b.applicantsTotal - a.applicantsTotal).slice(0, 5);
     let labels = topPrograms.map((program)=>program.name);
     let applicants = topPrograms.map((program)=>program.applicantsTotal);
@@ -670,7 +678,9 @@ function createProgramChart(programsData) {
         }
     });
 }
-document.addEventListener('DOMContentLoaded', async ()=>{
+/**
+ * Hämta data och skapa diagram när sidan laddats
+ */ document.addEventListener('DOMContentLoaded', async ()=>{
     let data = await fetchCourseData();
     if (data) {
         createCoursesChart(data);

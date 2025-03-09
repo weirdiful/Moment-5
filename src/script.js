@@ -12,7 +12,7 @@ function closeNav() {
  * 
  * @async
  * @function fetchCourseData
- 
+ * @returns {Promise<Object[]>} array av objekt med information om kurser och program
  * @throws {Error} felmeddelande om API anropet misslyckas
  */
 
@@ -26,6 +26,11 @@ async function fetchCourseData() {
   }
 }
 
+/**
+ * Skapar ett stapeldiagram med de 6 mest sökta kurserna
+ * @function createCoursesChart
+ * @param {Object[]} coursesData - array av kurserna 
+ */
 function createCoursesChart(coursesData) {
   let topCourses = coursesData
       .filter(item => item.type === "Kurs")
@@ -58,6 +63,11 @@ function createCoursesChart(coursesData) {
   });
 }
 
+/**
+ * Skapar ett cirkeldiagram med de 5 mest sökta programmen
+ * @function createProgramChart
+ * @param {Object[]} programsData - array av programmen
+ */
 function createProgramChart(programsData) {
   let topPrograms = programsData
       .filter(item => item.type === "Program")
@@ -79,6 +89,10 @@ function createProgramChart(programsData) {
       }
   });
 }
+
+/**
+ * Hämta data och skapa diagram när sidan laddats
+ */
 
 document.addEventListener('DOMContentLoaded', async () => {
   let data = await fetchCourseData();
