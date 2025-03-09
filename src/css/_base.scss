@@ -33,3 +33,20 @@ $dark-mode: true;
   :root {
     @include theme;
 }
+
+:root {
+  @include theme;
+  --gradient-shadow: linear-gradient(
+    45deg,
+    #590D22,
+    #800F2F,
+    #A4133C,
+    #C9184A,
+    #FF4D6D,
+    #FF758F,
+    #FF8FA3,
+    #FFB3C1,
+    #FFCCD5, 
+    #FFF0FE
+  );
+}

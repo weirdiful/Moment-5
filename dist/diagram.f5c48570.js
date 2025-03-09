@@ -635,9 +635,13 @@ function closeNav() {
                 {
                     label: "Antal s\xf6kande",
                     data: applicants,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
+                    backgroundColor: [
+                        '#FF8FA3'
+                    ],
+                    borderColor: [
+                        '#EA638C'
+                    ],
+                    borderWidth: 2
                 }
             ]
         },
@@ -667,11 +671,11 @@ function closeNav() {
                 {
                     data: applicants,
                     backgroundColor: [
-                        '#FF6384',
-                        '#36A2EB',
-                        '#FFCE56',
-                        '#4BC0C0',
-                        '#FF9F40'
+                        '#6050DC',
+                        ' #D52DB7',
+                        '#FF2E7E',
+                        '#FF6B45',
+                        '#FFAB05'
                     ]
                 }
             ]

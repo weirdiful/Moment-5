@@ -4,6 +4,7 @@
   --primary-color: #ea638c;
   --secondary-color: #89023e;
   --accent-color: #30343f;
+  --gradient-shadow: linear-gradient(45deg, #590d22, #800f2f, #a4133c, #c9184a, #ff4d6d, #ff758f, #ff8fa3, #ffb3c1, #ffccd5, #fff0fe);
 }
 
 .diagram1, .diagram2 {
@@ -38,8 +39,8 @@ html, body {
   background-color: var(--secondary-color);
   justify-content: flex-end;
   align-items: center;
-  width: 100%;
-  margin-bottom: auto;
+  width: 100vw;
+  margin: 0;
   padding: 50px;
   display: flex;
   position: relative;

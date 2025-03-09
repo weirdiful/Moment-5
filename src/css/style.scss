@@ -42,10 +42,11 @@ html, body {
 
 .header {
     margin-bottom: auto;
+    margin: 0;
     display: flex;
     position: relative;
     background-color: var(--secondary-color);
-    width: 100%;
+    width: 100vw;
     padding: 50px;
     justify-content: flex-end;
     align-items: center;

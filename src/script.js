@@ -48,9 +48,9 @@ function createCoursesChart(coursesData) {
           datasets: [{
               label: 'Antal sökande',
               data: applicants,
-              backgroundColor: 'rgba(75, 192, 192, 0.2)',
-              borderColor: 'rgba(75, 192, 192, 1)',
-              borderWidth: 1
+              backgroundColor: ['#FF8FA3'],
+              borderColor: ['#EA638C'],
+              borderWidth: 2
           }]
       },
       options: {
@@ -84,7 +84,7 @@ function createProgramChart(programsData) {
           labels: labels,
           datasets: [{
               data: applicants,
-              backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40'],
+              backgroundColor: ['#6050DC', ' #D52DB7', '#FF2E7E', '#FF6B45', '#FFAB05'],
           }]
       }
   });
