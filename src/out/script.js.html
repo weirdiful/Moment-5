@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: script.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: script.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+/**
+ * Hämta kursdata från API
+ * @async
+ * @function fetchCourseData
+ * @returns {Promise&lt;Object[]>} array av objekt med information om kurser och program
+ * @throws {Error} felmeddelande om API anropet misslyckas
+ */
+
+async function fetchCourseData() {
+  try {
+      let response = await fetch('https://studenter.miun.se/~mallar/dt211g/');
+      let data = await response.json();
+      return data;
+  } catch (error) {
+      console.error('Error fetching data:', error);
+  }
+}
+
+/**
+ * Skapar ett stapeldiagram med de 6 mest sökta kurserna
+ * @function createCoursesChart
+ * @param {Object[]} coursesData - array av kurserna 
+ */
+function createCoursesChart(coursesData) {
+  let topCourses = coursesData
+      .filter(item => item.type === "Kurs")
+      .sort((a, b) => b.applicantsTotal - a.applicantsTotal)
+      .slice(0, 6);
+
+  let labels = topCourses.map(course => course.name);
+  let applicants = topCourses.map(course => course.applicantsTotal);
+
+  let ctx = document.getElementById('coursesChart').getContext('2d');
+  new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: labels,
+          datasets: [{
+              label: 'Antal sökande',
+              data: applicants,
+              backgroundColor: ['#FF8FA3'],
+              borderColor: ['#EA638C'],
+              borderWidth: 2
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+}
+
+/**
+ * Skapar ett cirkeldiagram med de 5 mest sökta programmen
+ * @function createProgramChart
+ * @param {Object[]} programsData - array av programmen
+ */
+function createProgramChart(programsData) {
+  let topPrograms = programsData
+      .filter(item => item.type === "Program")
+      .sort((a, b) => b.applicantsTotal - a.applicantsTotal)
+      .slice(0, 5);
+
+  let labels = topPrograms.map(program => program.name);
+  let applicants = topPrograms.map(program => program.applicantsTotal);
+
+  let ctx = document.getElementById('programChart').getContext('2d');
+  new Chart(ctx, {
+      type: 'pie',
+      data: {
+          labels: labels,
+          datasets: [{
+              data: applicants,
+              backgroundColor: ['#6050DC', ' #D52DB7', '#FF2E7E', '#FF6B45', '#FFAB05'],
+          }]
+      }
+  });
+}
+
+/**
+ * Hämta data och skapa diagram när sidan laddats
+ */
+
+document.addEventListener('DOMContentLoaded', async () => {
+  let data = await fetchCourseData();
+  
+  if (data) {
+      createCoursesChart(data); 
+      createProgramChart(data);
+  }
+});
+
+
+
+//KARTA
+
+/**
+ * Väntar tills DOM-innehållet laddats innan koden kör
+ */
+document.addEventListener("DOMContentLoaded", function (){
+
+  //skapar leaflet-karta och sätter koordinaterna till Stockholm
+let map = L.map('map').setView([59.3327, 18.0656], 13);
+
+//OpenStreetMap-bakgrundskartan
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&amp;copy; &lt;a href="http://www.openstreetmap.org/copyright">OpenStreetMap&lt;/a>'
+}).addTo(map);
+
+//Sökfält och sökknapp
+let searchBtn = document.getElementById("search-btn");
+let searchInput = document.getElementById("search-input");
+
+
+/**
+ * Lyssnar efter klick på sökknappen för att göra en API-förfrågan till Nominatim
+ */
+searchBtn.addEventListener("click", function () {
+  let query = searchInput.value.trim(); //hämtar inmatning och tar borta eventuella extra mellanslag
+
+  if (query.length > 0) {
+    //Anropar nominatim API för att söka efter plats
+      fetch (`https://nominatim.openstreetmap.org/search?format=json&amp;q=${query}`)
+        .then(response =>  {
+          if (!response.ok) {
+            throw new Error("Nätverksfel vid sökning");
+          }
+          return response.json();      
+     })
+        .then (data => {
+          if (data.length > 0) {
+            let lat = parseFloat(data[0].lat); //Omvandlar longitud och latitud till tal
+            let lon = parseFloat(data[0].lon);
+
+            //Flyttar kartans vy till den sökta platsen
+            map.setView([lat, lon], 13);
+
+            //Skapar markör för plats och lägger till namn som popup
+            L.marker([lat, lon]).addTo(map)
+            .bindPopup(`&lt;b>${data[0].display_name}&lt;/b>`)
+            .openPopup();
+          } else {
+             alert("Platsen hittades inte. Försök igen.");
+          }
+                })
+                .catch(error => {
+                    console.error("Fel vid sökning:", error);
+                    alert("Ett fel uppstod vid sökning. Kontrollera din internetanslutning.");
+                });
+        } else {
+            alert("Ange en plats att söka efter.");
+        }
+    });
+
+  });</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createCoursesChart">createCoursesChart</a></li><li><a href="global.html#createProgramChart">createProgramChart</a></li><li><a href="global.html#fetchCourseData">fetchCourseData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Mar 09 2025 20:01:12 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
