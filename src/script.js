@@ -107,22 +107,33 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 //KARTA
 
+/**
+ * Väntar tills DOM-innehållet laddats innan koden kör
+ */
 document.addEventListener("DOMContentLoaded", function (){
 
+  //skapar leaflet-karta och sätter koordinaterna till Stockholm
 let map = L.map('map').setView([59.3327, 18.0656], 13);
 
+//OpenStreetMap-bakgrundskartan
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
+//Sökfält och sökknapp
 let searchBtn = document.getElementById("search-btn");
 let searchInput = document.getElementById("search-input");
 
+
+/**
+ * Lyssnar efter klick på sökknappen för att göra en API-förfrågan till Nominatim
+ */
 searchBtn.addEventListener("click", function () {
-  let query = searchInput.value.trim();
+  let query = searchInput.value.trim(); //hämtar inmatning och tar borta eventuella extra mellanslag
 
   if (query.length > 0) {
+    //Anropar nominatim API för att söka efter plats
       fetch (`https://nominatim.openstreetmap.org/search?format=json&q=${query}`)
         .then(response =>  {
           if (!response.ok) {
@@ -132,16 +143,19 @@ searchBtn.addEventListener("click", function () {
      })
         .then (data => {
           if (data.length > 0) {
-            let lat = parseFloat(data[0].lat);
-                        let lon = parseFloat(data[0].lon);
-                        map.setView([lat, lon], 13);
+            let lat = parseFloat(data[0].lat); //Omvandlar longitud och latitud till tal
+            let lon = parseFloat(data[0].lon);
 
-                        L.marker([lat, lon]).addTo(map)
-                            .bindPopup(`<b>${data[0].display_name}</b>`)
-                            .openPopup();
-                    } else {
-                        alert("Platsen hittades inte. Försök igen.");
-                    }
+            //Flyttar kartans vy till den sökta platsen
+            map.setView([lat, lon], 13);
+
+            //Skapar markör för plats och lägger till namn som popup
+            L.marker([lat, lon]).addTo(map)
+            .bindPopup(`<b>${data[0].display_name}</b>`)
+            .openPopup();
+          } else {
+             alert("Platsen hittades inte. Försök igen.");
+          }
                 })
                 .catch(error => {
                     console.error("Fel vid sökning:", error);

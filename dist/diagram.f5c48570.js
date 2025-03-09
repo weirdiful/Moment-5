@@ -692,30 +692,40 @@ function closeNav() {
     }
 });
 //KARTA
-document.addEventListener("DOMContentLoaded", function() {
+/**
+ * Väntar tills DOM-innehållet laddats innan koden kör
+ */ document.addEventListener("DOMContentLoaded", function() {
+    //skapar leaflet-karta och sätter koordinaterna till Stockholm
     let map = L.map('map').setView([
         59.3327,
         18.0656
     ], 13);
+    //OpenStreetMap-bakgrundskartan
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
+    //Sökfält och sökknapp
     let searchBtn = document.getElementById("search-btn");
     let searchInput = document.getElementById("search-input");
-    searchBtn.addEventListener("click", function() {
-        let query = searchInput.value.trim();
-        if (query.length > 0) fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`).then((response)=>{
+    /**
+ * Lyssnar efter klick på sökknappen för att göra en API-förfrågan till Nominatim
+ */ searchBtn.addEventListener("click", function() {
+        let query = searchInput.value.trim(); //hämtar inmatning och tar borta eventuella extra mellanslag
+        if (query.length > 0) //Anropar nominatim API för att söka efter plats
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`).then((response)=>{
             if (!response.ok) throw new Error("N\xe4tverksfel vid s\xf6kning");
             return response.json();
         }).then((data)=>{
             if (data.length > 0) {
-                let lat = parseFloat(data[0].lat);
+                let lat = parseFloat(data[0].lat); //Omvandlar longitud och latitud till tal
                 let lon = parseFloat(data[0].lon);
+                //Flyttar kartans vy till den sökta platsen
                 map.setView([
                     lat,
                     lon
                 ], 13);
+                //Skapar markör för plats och lägger till namn som popup
                 L.marker([
                     lat,
                     lon
