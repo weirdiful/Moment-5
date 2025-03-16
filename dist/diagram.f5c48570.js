@@ -604,7 +604,6 @@ function closeNav() {
 }
 /**
  * Hämta kursdata från API
- * 
  * @async
  * @function fetchCourseData
  * @returns {Promise<Object[]>} array av objekt med information om kurser och program
